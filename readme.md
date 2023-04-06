@@ -1,4 +1,6 @@
 # NLP Demo Project
+[English](readme_eng.md)
+
 小白入门NLP，从零开始搭建数据处理流程，GPT模块以及训练模块
 旨在帮助广大从零开始学习NLP的同学一个尽可能全面的例子，包括数据清洗，预处理等流程。
 以下资源可供参考：
@@ -11,4 +13,5 @@
 - dataset.py: 构建pytorch数据集
 - models.py: GPT, Attention等网络模组的定义
 - train.py: 训练脚本
+
 **需自行下载数据集以及停词表，并放入'''./data'''文件夹内**
