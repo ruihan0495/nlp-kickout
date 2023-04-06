@@ -1,0 +1,7 @@
+einops==0.6.0
+pytorch==1.13.1
+transformers==4.24.0
+python==3.8.16
+numpy==1.23.5
+
+
