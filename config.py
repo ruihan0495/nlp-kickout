@@ -11,6 +11,9 @@ class GPTConfig:
     dropout: float = 0.6
     lr: float = 0.001
     step_size: int = 100
+    
+    # Training tricks
+    trick_embed: bool = False # SmallInitEmb, see https://github.com/BlinkDL/SmallInitEmb
 
     def __post_init__(self):
         self.model = GPTModel(self.vocab_size, 

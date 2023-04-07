@@ -77,19 +77,27 @@ class PositionalEncoding(nn.Module):
 class GPTModel(nn.Module):
 
     def __init__(self, vocab_size, 
-                       embedding_size, 
-                       num_heads, 
-                       max_seq_len, 
+                       embedding_size,
+                       num_heads,
+                       max_seq_len,
                        num_transformer_blocks,
-                       dropout) -> None:
+                       dropout,
+                       trick_embed=False) -> None:
         super().__init__()
         self.embedding = nn.Embedding(vocab_size, embedding_size)
         self.transformers = [
-            TransformerDecoder(embedding_size, max_seq_len, num_heads, dropout) for _ in range(num_transformer_blocks)
+            TransformerDecoder(embedding_size, max_seq_len, num_heads, dropout) 
+                                for _ in range(num_transformer_blocks)
         ]
         self.unembedding = nn.Linear(embedding_size, vocab_size)
         self.dropout = nn.Dropout(p=dropout) # regularization
         self.positional_encoding = PositionalEncoding(embedding_size)
+        self.trick_embed = trick_embed
+        
+        # tricks
+        if self.trick_embed:
+            self.emb_norm = nn.LayerNorm(normalized_shape=[max_seq_len, embedding_size])
+        
         # init weight
         self.apply(self._init_weights)
 
@@ -99,9 +107,16 @@ class GPTModel(nn.Module):
             module.bias.data.fill_(0.0)
         elif isinstance(module, nn.Embedding):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
+            
+            # small init embedding trick
+            if self.trick_embed:
+                nn.init.uniform_(module.weight, a=1e-4, b=1e-4)
 
     def forward(self, x):
         x = self.embedding(x)
+        if self.trick_embed:
+            x = self.emb_norm(x)
+
         x += self.positional_encoding(x)
 
         for layer in self.transformers:
@@ -113,7 +128,6 @@ class GPTModel(nn.Module):
 
 
 if __name__ == "__main__":
-
     vocab_size = 11285
     embedding_size = 128
     num_heads = 4
@@ -121,7 +135,13 @@ if __name__ == "__main__":
     num_transformer_blocks = 48
     dropout = 0.6
 
-    gpt = GPTModel(vocab_size, embedding_size, num_heads, max_seq_len, num_transformer_blocks, dropout)
+    gpt = GPTModel(vocab_size, 
+                   embedding_size, 
+                   num_heads, 
+                   max_seq_len, 
+                   num_transformer_blocks, 
+                   dropout,
+                   True)
     
     x = torch.tensor([[1, 2, 3, 4, 5, 6]])
     gpt(x)

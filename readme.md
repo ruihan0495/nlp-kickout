@@ -8,6 +8,7 @@
 - [GPT3结构详解](https://dugas.ch/artificial_curiosity/GPT_architecture.html)
 - [NanoGPT](https://github.com/karpathy/nanoGPT/tree/a82b33b525ca9855d705656387698e13eb8e8d4b)
 - [tiktoken](https://github.com/openai/tiktoken)
+- [小模型tricks](https://github.com/BlinkDL/RWKV-LM#how-it-works)
 ## 代码结构简介
 - data_pipeline.py: 数据预处理流程
 - dataset.py: 构建pytorch数据集

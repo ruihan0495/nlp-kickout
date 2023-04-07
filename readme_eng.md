@@ -12,6 +12,7 @@ Useful resources：
 - [GPT3 on a napkin](https://dugas.ch/artificial_curiosity/GPT_architecture.html)
 - [NanoGPT](https://github.com/karpathy/nanoGPT/tree/a82b33b525ca9855d705656387698e13eb8e8d4b)
 - [tiktoken](https://github.com/openai/tiktoken)
+- [tricks for small model](https://github.com/BlinkDL/RWKV-LM#how-it-works)
 ## Code structure
 - data_pipeline.py: data preprocessing
 - dataset.py: build pytorch dataset
